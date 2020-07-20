@@ -1,0 +1,9 @@
+# Project files to ignore
+/.vs/
+/bin/
+/objs/
+
+
+# Debug && Release folder
+Debug/
+Release/
