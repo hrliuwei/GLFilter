@@ -9,8 +9,8 @@
 
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
-std::string commonPath = "F:\\PersonGit\\GLFilter\\GLFilter";
-std::string resourcePath = "F:\\PersonGit\\GLFilter\\Resource";
+std::string commonPath = "D:\\PersonGit\\GLFilter\\GLFilter";
+std::string resourcePath = "D:\\PersonGit\\GLFilter\\Resource";
 unsigned int loadTextureFromFile(char const* path);
 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)SCREEN_WIDTH, (GLfloat)SCREEN_HEIGHT, 0.0f, -1.0f, 1.0f);
 
@@ -82,8 +82,8 @@ int main(int argc, char* argv[])
 
 	GLfloat deltaTime = 0.0f;
 	GLfloat lastFrame = 0.0f;
-	float ud = 80.0f;
-	float direction = -1.0f;
+	float ud = 0.0f;
+	float direction = 1.0f;
 	float delta = 0.0f;
 	while (!glfwWindowShouldClose(window))
 	{
@@ -102,15 +102,23 @@ int main(int argc, char* argv[])
 		model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::translate(model, glm::vec3(-0.5f*SCREEN_WIDTH, -0.5f*SCREEN_HEIGHT, 0.0f));
 		model = glm::scale(model, glm::vec3(glm::vec2(800.0f, 600.0f), 1.0f));
-		if (ud<1.0f){
+		if (ud<-5000.0f){
 			direction = 1.0f;
 		}
-		if (ud>80.0f){
+		if (ud>5000.0f){
 			direction = -1.0f;
 		}
-		delta = deltaTime *direction*5.0f;
+		delta = deltaTime *direction*100.0f;
 		ud +=delta;
-		
+		if (abs(ud)<30.0f)
+		{
+			shader.setInt("mix", 0);
+		}
+		else {
+			shader.setInt("mix", 1);
+		}
+		int k = rand() % 100;
+		shader.setInt("bgra", k);
 		shader.setFloat("ud", ud);
 		shader.setMat4("model", model);
 		shader.setVec3("spriteColor", color);
