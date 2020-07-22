@@ -6,6 +6,8 @@ uniform sampler2D image;
 uniform vec3 spriteColor;
 uniform float ud;
 //float ud = 80.0f;
+vec2 back = vec2(800.0f,600.0f);
+vec2 masac = vec2(10,10);
 void main()
 {
 	vec2 st = Texcoords.st;
@@ -52,6 +54,14 @@ void main()
 	//color = vec4(spriteColor,1.0)*texture(image, Texcoords);
 	//color = vec4(colorT,1.0);
 	//color = color.bgra;
-	color = texture(image, st);
-	
+	if(Texcoords.s > 0.3 && Texcoords.s < 0.6 && Texcoords.t > 0.3 && Texcoords.t < 0.6)
+	{
+		vec2 back_ori = vec2(Texcoords.s * back.x, Texcoords.t * back.y);
+		vec2 masac_ori = vec2(floor(back_ori.x/masac.x)*masac.x, floor(back_ori.y/masac.y)*masac.y);
+		vec2 masac_new = vec2(masac_ori.x/back.x, masac_ori.y/back.y);	
+		color = vec4(vec3(texture(image, masac_new)),1.0);
+	}
+	else{
+		color = vec4(vec3(texture(image, Texcoords)),1.0);
+	}
 }
