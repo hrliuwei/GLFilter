@@ -4,7 +4,8 @@ out vec4 color;
 
 uniform sampler2D image;
 uniform vec3 spriteColor;
-float ud = 80.0f;
+uniform float ud;
+//float ud = 80.0f;
 void main()
 {
 	vec2 st = Texcoords.st;
