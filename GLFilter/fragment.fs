@@ -20,17 +20,17 @@ void main()
 	{
 		st = vec2(0.5,0.5) + vec2(lsize*cos(beta),lsize*sin(beta));
 	}
-	float kenrel[9] = {
+	float kenrel[9] = float[](
 		1,2,1,
 		2,4,2,
 		1,2,1
-	};
+	);
 	for(int i = 0; i < 9; ++i)
 	{
 		kenrel[i] = kenrel[i]/16;
 	}
 	float offset = 1.0f / 300.0f;
-	vec2 offsets[9] = {
+	vec2 offsets[9] = vec2[](
     vec2(-offset,  offset ),  // 左上
     vec2(  0.0f,    offset ),  // 中上
     vec2(  offset,  offset ),  // 右上
@@ -40,7 +40,7 @@ void main()
     vec2( -offset, -offset ),  // 左下
     vec2(  0.0f,   -offset ),  // 中下
     vec2(  offset, -offset )   // 右下
-	};
+	);
 	vec3 sampleT[9];
 	for(int i = 0; i < 9; i++)
 	{
