@@ -93,9 +93,9 @@ int main(int argc, char* argv[])
 		//manage user input
 		shader.use();
 		glm::mat4 model(1.0f);
-		model = glm::translate(model, glm::vec3(glm::vec2(0, 0), 0.0f));
-
-		model = glm::translate(model, glm::vec3(0.5f*SCREEN_WIDTH, 0.5f*SCREEN_HEIGHT, 0.0f));
+ 		model = glm::translate(model, glm::vec3(glm::vec2(0, 0), 0.0f));
+ 
+ 		model = glm::translate(model, glm::vec3(0.5f*SCREEN_WIDTH, 0.5f*SCREEN_HEIGHT, 0.0f));
 		model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::translate(model, glm::vec3(-0.5f*SCREEN_WIDTH, -0.5f*SCREEN_HEIGHT, 0.0f));
 		model = glm::scale(model, glm::vec3(glm::vec2(800.0f, 600.0f), 1.0f));
