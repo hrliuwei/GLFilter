@@ -54,7 +54,7 @@ void main()
 	//color = vec4(spriteColor,1.0)*texture(image, Texcoords);
 	//color = vec4(colorT,1.0);
 	//color = color.bgra;
-	if(Texcoords.s > 0.3 && Texcoords.s < 0.6 && Texcoords.t > 0.3 && Texcoords.t < 0.6)
+	if(Texcoords.s > 0.3 && Texcoords.s < 0.55 && Texcoords.t > 0.2 && Texcoords.t < 0.5)
 	{
 		vec2 back_ori = vec2(Texcoords.s * back.x, Texcoords.t * back.y);
 		vec2 masac_ori = vec2(floor(back_ori.x/masac.x)*masac.x, floor(back_ori.y/masac.y)*masac.y);

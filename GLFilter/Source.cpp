@@ -5,7 +5,10 @@
 #include <iostream>
 #include "shader.h"
 #include "stb_image.h"
+#include "Particle.h"
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
+
+ParticleGenerator* pParticle;
 
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
@@ -48,8 +51,12 @@ int main(int argc, char* argv[])
 	glfwSetKeyCallback(window, key_callback);
 
 	Shader shader((commonPath+"\\vertex.vs").c_str(), (commonPath +"\\fragment.fs").c_str());
+	Shader shader_particle((commonPath + "\\particle.vs").c_str(), (commonPath + "\\particle.fs").c_str());
 
 	unsigned int textureId = loadTextureFromFile((resourcePath + "\\background.jpg").c_str());
+	unsigned int textureId_particle = loadTextureFromFile((resourcePath + "\\particle.png").c_str());
+
+	pParticle = new ParticleGenerator(shader_particle, textureId_particle, 1000);
 
 	// ÅäÖÃ VAO/VBO
 	GLuint VAO,VBO;
@@ -79,6 +86,10 @@ int main(int argc, char* argv[])
 	shader.use();
 	shader.setInt("image", 0);
 	shader.setMat4("projection", projection);
+
+	shader_particle.use();
+	shader_particle.setInt("sprite", 0);
+	shader_particle.setMat4("projection", projection);
 
 	GLfloat deltaTime = 0.0f;
 	GLfloat lastFrame = 0.0f;
@@ -120,6 +131,9 @@ int main(int argc, char* argv[])
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
+
+		pParticle->Update(deltaTime, glm::vec2(600, 500), 5, glm::vec2(10.0f,0.0f));
+		pParticle->Draw();
 
 		
 		glfwSwapBuffers(window);
