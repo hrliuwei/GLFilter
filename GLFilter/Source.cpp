@@ -13,8 +13,8 @@ ParticleGenerator* pParticle;
 
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
-std::string commonPath = "F:\\PersonGit\\GLFilter\\GLFilter";
-std::string resourcePath = "F:\\PersonGit\\GLFilter\\Resource";
+std::string commonPath = "D:\\PersonGit\\GLFilter\\GLFilter";
+std::string resourcePath = "D:\\PersonGit\\GLFilter\\Resource";
 unsigned int loadTextureFromFile(char const* path);
 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)SCREEN_WIDTH, (GLfloat)SCREEN_HEIGHT, 0.0f, -1.0f, 1.0f);
 

@@ -2,11 +2,11 @@
 #include <math.h>
 
 double calcExp(int x, int u) {
-	double det = 1.0;
-	float fx = (float)x/100;
-	double result = exp((-1.0)*(fx - u)*(fx - u) / (2 * det*det));
+	double det = 0.2;
+	float fx = (float)x/50;
+	double result = exp((-1.0)*(fx)*(fx) / (2 * det*det));
 	double t = (sqrt(2 * 3.14))*det;
-	result = result / t * 20;
+	result = result / t * 50;
 	return result;
 }
 
@@ -48,15 +48,15 @@ void ParticleGenerator::respawPartcile(Particle& particle, glm::vec2 object, glm
 	GLfloat randomx = (rand() % 200 - 100) / 1.0f;
 	GLfloat randomy = calcExp(randomx, 0);
 	GLint delta = randomy;
-	GLfloat randomEx = (rand() % delta) / 1.0f;
+	GLfloat randomEy = rand()*1.0 / RAND_MAX * randomy;
 	
 	
 	GLfloat rColor = (rand() % 100) / 100.f;
 	GLfloat gColor = (rand() % 100) / 100.f;
 	GLfloat bColor = (rand() % 100) / 100.f;
-	particle.Position = object  + glm::vec2(randomx, randomEx) + glm::vec2(0.0f,-100.0f);
+ 	particle.Position = object  + glm::vec2(randomx, -randomEy) + glm::vec2(0.0f,-100.0f);
 	particle.Color = glm::vec4(rColor, gColor, bColor, 1.0f);
-	particle.Life = 2.0f;
+	particle.Life = 0.6f;
 	particle.Velocity = glm::vec2(0.0f,-5.0f);
 }
 
@@ -71,7 +71,7 @@ void ParticleGenerator::Update(GLfloat dt, glm::vec2  object, GLuint newParticle
 	for (int i = 0; i < m_amount; ++i)
 	{
 		Particle &p = m_Particle[i];
-		p.Life -= dt*0.1f;
+		p.Life -= dt*1.0f;
 		if (p.Life > 0.0f)
 		{
 			p.Position += p.Velocity*dt*5.0f;
