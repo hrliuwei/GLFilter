@@ -9,5 +9,5 @@ uniform sampler2D sprite;
 
 void main()
 {
-    Fragcolor =  ParticleColor;
+    Fragcolor =  vec4(vec3(texture(sprite, TexCoords)),1.0);
 }

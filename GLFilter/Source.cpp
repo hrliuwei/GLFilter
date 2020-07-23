@@ -6,16 +6,19 @@
 #include "shader.h"
 #include "stb_image.h"
 #include "Particle.h"
+
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
 ParticleGenerator* pParticle;
 
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
-std::string commonPath = "D:\\PersonGit\\GLFilter\\GLFilter";
-std::string resourcePath = "D:\\PersonGit\\GLFilter\\Resource";
+std::string commonPath = "F:\\PersonGit\\GLFilter\\GLFilter";
+std::string resourcePath = "F:\\PersonGit\\GLFilter\\Resource";
 unsigned int loadTextureFromFile(char const* path);
 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)SCREEN_WIDTH, (GLfloat)SCREEN_HEIGHT, 0.0f, -1.0f, 1.0f);
+
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {

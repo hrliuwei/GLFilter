@@ -1,4 +1,14 @@
 #include "Particle.h"
+#include <math.h>
+
+double calcExp(int x, int u) {
+	double det = 1.0;
+	float fx = (float)x/100;
+	double result = exp((-1.0)*(fx - u)*(fx - u) / (2 * det*det));
+	double t = (sqrt(2 * 3.14))*det;
+	result = result / t * 20;
+	return result;
+}
 
 ParticleGenerator::ParticleGenerator(Shader shader, unsigned int texture_2D, GLuint amount)
 	:m_shader(shader),
@@ -35,23 +45,19 @@ GLuint ParticleGenerator::firstUnusedParticle()
 
 void ParticleGenerator::respawPartcile(Particle& particle, glm::vec2 object, glm::vec2 offset)
 {
-	GLfloat random = (rand() % 200 - 100) / 1.0f;
-	GLfloat randomEx = (rand() % 200 - 100) / 1.0f;
-	int prefix[2] = { -1,1 };
-	int nIndex = rand() % 2;
-	int R = 100;
-	glm::vec2 Positon_circle = object + glm::vec2(0.0f, -200.0f);
-	GLfloat result = 100 * 100 - abs(random*random);
-	randomEx = -glm::sqrt(result);
-	randomEx = randomEx * prefix[nIndex];
-	randomEx = -random * random/100;
+	GLfloat randomx = (rand() % 200 - 100) / 1.0f;
+	GLfloat randomy = calcExp(randomx, 0);
+	GLint delta = randomy;
+	GLfloat randomEx = (rand() % delta) / 1.0f;
+	
+	
 	GLfloat rColor = (rand() % 100) / 100.f;
 	GLfloat gColor = (rand() % 100) / 100.f;
 	GLfloat bColor = (rand() % 100) / 100.f;
-	particle.Position = object  + glm::vec2(random, randomEx) + offset + glm::vec2(0.0f,-100.0f);
+	particle.Position = object  + glm::vec2(randomx, randomEx) + glm::vec2(0.0f,-100.0f);
 	particle.Color = glm::vec4(rColor, gColor, bColor, 1.0f);
 	particle.Life = 2.0f;
-	particle.Velocity = glm::vec2(0.0f,5.0f);
+	particle.Velocity = glm::vec2(0.0f,-5.0f);
 }
 
 
@@ -65,7 +71,7 @@ void ParticleGenerator::Update(GLfloat dt, glm::vec2  object, GLuint newParticle
 	for (int i = 0; i < m_amount; ++i)
 	{
 		Particle &p = m_Particle[i];
-		p.Life -= dt*0.001f;
+		p.Life -= dt*0.1f;
 		if (p.Life > 0.0f)
 		{
 			p.Position += p.Velocity*dt*5.0f;
