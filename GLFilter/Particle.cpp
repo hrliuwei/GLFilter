@@ -1,13 +1,20 @@
 #include "Particle.h"
 #include <math.h>
-
-double calcExp(int x, int u) {
-	double det = 0.2;
-	float fx = (float)x/50;
-	double result = exp((-1.0)*(fx)*(fx) / (2 * det*det));
-	double t = (sqrt(2 * 3.14))*det;
-	result = result / t * 50;
+glm::vec2 center = glm::vec2(600.0f, 500.0f);
+double calcExp(float fx, float fu) {
+	double cita = 0.1;
+	double result = exp((-1.0)*(fx- fu)*(fx- fu) / (2 * cita*cita));
+	double t = (sqrt(2 * 3.14))*cita;
+	result = result / t;
 	return result;
+}
+
+float calcGS()
+{
+	float u = (rand() % 100)*1.0 / 100;
+	float v = (rand() % 100)*1.0 / 100;
+	float z = sqrt(-2 * log(u))*cos(2 * 3.14159 * v);
+	return z;
 }
 
 ParticleGenerator::ParticleGenerator(Shader shader, unsigned int texture_2D, GLuint amount)
@@ -44,20 +51,18 @@ GLuint ParticleGenerator::firstUnusedParticle()
 }
 
 void ParticleGenerator::respawPartcile(Particle& particle, glm::vec2 object, glm::vec2 offset)
-{
-	GLfloat randomx = (rand() % 200 - 100) / 1.0f;
-	GLfloat randomy = calcExp(randomx, 0);
-	GLint delta = randomy;
-	GLfloat randomEy = rand()*1.0 / RAND_MAX * randomy;
-	
-	
+{ 
+	GLfloat randomx = calcGS()*50;
+	GLfloat randomy = abs(calcGS()) * 100;
+ 	particle.Position = object  + glm::vec2(randomx, -randomy) + glm::vec2(0.0f,-100.0f);
+
 	GLfloat rColor = (rand() % 100) / 100.f;
 	GLfloat gColor = (rand() % 100) / 100.f;
 	GLfloat bColor = (rand() % 100) / 100.f;
- 	particle.Position = object  + glm::vec2(randomx, -randomEy) + glm::vec2(0.0f,-100.0f);
 	particle.Color = glm::vec4(rColor, gColor, bColor, 1.0f);
-	particle.Life = 0.6f;
-	particle.Velocity = glm::vec2(0.0f,-5.0f);
+	particle.Life = 1.2f;
+	float vy = rand() % 5 * 1.0 + 5;
+	particle.Velocity = glm::vec2(0.0f,-vy);
 }
 
 
@@ -75,14 +80,22 @@ void ParticleGenerator::Update(GLfloat dt, glm::vec2  object, GLuint newParticle
 		if (p.Life > 0.0f)
 		{
 			p.Position += p.Velocity*dt*5.0f;
-			p.Color.a -= dt * 2.5f;
+			p.Color.a -= dt * 1.0f;
+			glm::vec2 vlen = p.Position - center;
+			float flen = glm::length(vlen);
+			if (flen > 300.0){
+				flen = 300.0;
+			}
+			float fa =1- (flen / 300.0)*(flen / 300);
+			p.Color.a = fa;
 			//p.Color.a = 0.0f;
 		}
 	}
 }
 
 void ParticleGenerator::Draw() {
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	m_shader.use();
 	int nsize = 10;
 	for (Particle particle:m_Particle)
@@ -109,7 +122,8 @@ void ParticleGenerator::Draw() {
 			glBindVertexArray(0);
 		}
 	}
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC1_ALPHA);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC1_ALPHA);
+	//glDisable(GL_BLEND);
 }
 
 void ParticleGenerator::init()

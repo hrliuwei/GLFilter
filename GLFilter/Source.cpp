@@ -13,8 +13,8 @@ ParticleGenerator* pParticle;
 
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
-std::string commonPath = "D:\\PersonGit\\GLFilter\\GLFilter";
-std::string resourcePath = "D:\\PersonGit\\GLFilter\\Resource";
+std::string commonPath = "F:\\PersonGit\\GLFilter\\GLFilter";
+std::string resourcePath = "F:\\PersonGit\\GLFilter\\Resource";
 unsigned int loadTextureFromFile(char const* path);
 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)SCREEN_WIDTH, (GLfloat)SCREEN_HEIGHT, 0.0f, -1.0f, 1.0f);
 
@@ -99,6 +99,7 @@ int main(int argc, char* argv[])
 	float ud = 80.0f;
 	float direction = -1.0f;
 	float delta = 0.0f;
+	glEnable(GL_BLEND);
 	while (!glfwWindowShouldClose(window))
 	{
 		GLfloat currentFrame = glfwGetTime();
@@ -135,7 +136,7 @@ int main(int argc, char* argv[])
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
 
-		pParticle->Update(deltaTime, glm::vec2(600, 500), 5, glm::vec2(10.0f,0.0f));
+		pParticle->Update(deltaTime, glm::vec2(600, 500), 3, glm::vec2(10.0f,0.0f));
 		pParticle->Draw();
 
 		
