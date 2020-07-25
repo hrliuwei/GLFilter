@@ -1,6 +1,6 @@
 #include "Particle.h"
 #include <math.h>
-glm::vec2 center = glm::vec2(600.0f, 500.0f);
+glm::vec2 center = glm::vec2(600.0f, 600.0f);
 double calcExp(float fx, float fu) {
 	double cita = 0.1;
 	double result = exp((-1.0)*(fx- fu)*(fx- fu) / (2 * cita*cita));
@@ -53,15 +53,15 @@ GLuint ParticleGenerator::firstUnusedParticle()
 void ParticleGenerator::respawPartcile(Particle& particle, glm::vec2 object, glm::vec2 offset)
 { 
 	GLfloat randomx = calcGS()*50;
-	GLfloat randomy = abs(calcGS()) * 100;
+	GLfloat randomy = abs(calcGS()) * 80;
  	particle.Position = object  + glm::vec2(randomx, -randomy) + glm::vec2(0.0f,-100.0f);
 
 	GLfloat rColor = (rand() % 100) / 100.f;
 	GLfloat gColor = (rand() % 100) / 100.f;
 	GLfloat bColor = (rand() % 100) / 100.f;
 	particle.Color = glm::vec4(rColor, gColor, bColor, 1.0f);
-	particle.Life = 1.2f;
-	float vy = rand() % 5 * 1.0 + 5;
+	particle.Life = 1.0f;
+	float vy = rand() % 5 * 1.0 + 3;
 	particle.Velocity = glm::vec2(0.0f,-vy);
 }
 
@@ -76,11 +76,11 @@ void ParticleGenerator::Update(GLfloat dt, glm::vec2  object, GLuint newParticle
 	for (int i = 0; i < m_amount; ++i)
 	{
 		Particle &p = m_Particle[i];
-		p.Life -= dt*1.0f;
+		p.Life -= dt*3.0f;
 		if (p.Life > 0.0f)
 		{
 			p.Position += p.Velocity*dt*5.0f;
-			p.Color.a -= dt * 1.0f;
+			p.Color.a -= dt * 2.0f;
 			glm::vec2 vlen = p.Position - center;
 			float flen = glm::length(vlen);
 			if (flen > 300.0){
@@ -95,7 +95,7 @@ void ParticleGenerator::Update(GLfloat dt, glm::vec2  object, GLuint newParticle
 
 void ParticleGenerator::Draw() {
 	
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	m_shader.use();
 	int nsize = 10;
 	for (Particle particle:m_Particle)
@@ -122,7 +122,7 @@ void ParticleGenerator::Draw() {
 			glBindVertexArray(0);
 		}
 	}
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC1_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//glDisable(GL_BLEND);
 }
 

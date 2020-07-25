@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
 
-		pParticle->Update(deltaTime, glm::vec2(600, 500), 3, glm::vec2(10.0f,0.0f));
+		pParticle->Update(deltaTime, glm::vec2(600, 600), 5, glm::vec2(10.0f,0.0f));
 		pParticle->Draw();
 
 		
