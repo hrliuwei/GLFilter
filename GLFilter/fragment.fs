@@ -7,14 +7,14 @@ uniform vec3 spriteColor;
 uniform float ud;
 //float ud = 80.0f;
 vec2 back = vec2(800.0f,600.0f);
-vec2 position = vec2(270,225);
-vec2 target = vec2(275,225);
+vec2 position = vec2(370,350);
+vec2 target = vec2(375,350);
 vec2 masac = vec2(10,10);
-float R = 30.0;
+float R = 60.0;
 
 vec2 GetTexCoords(vec2 positonNow, float len)
 {
-	float xishu = (1-(len/R)*(len/R))*R;
+	float xishu = (1-(len/R)*(len/R))*10;
 	vec2 result = vec2(positonNow.s - xishu,positonNow.t);
 	return result;
 }
