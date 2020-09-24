@@ -6,6 +6,7 @@
 #include "shader.h"
 #include "stb_image.h"
 #include "Particle.h"
+#include "Peg.h"
 
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
@@ -16,6 +17,7 @@ const GLuint SCREEN_HEIGHT = 600;
 std::string commonPath = "F:\\PersonGit\\GLFilter\\GLFilter";
 std::string resourcePath = "F:\\PersonGit\\GLFilter\\Resource";
 unsigned int loadTextureFromFile(char const* path);
+void loadTextureFromData(unsigned char* data, int width, int height, GLuint texture);
 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)SCREEN_WIDTH, (GLfloat)SCREEN_HEIGHT, 0.0f, -1.0f, 1.0f);
 
 
@@ -100,6 +102,17 @@ int main(int argc, char* argv[])
 	float direction = -1.0f;
 	float delta = 0.0f;
 	glEnable(GL_BLEND);
+
+	CPeg peg;
+	peg.Init();
+	int ret = peg.OpenInput("HD Pro Webcam C920");
+	if (ret < 0){
+		return 0;
+	}
+	std::thread thd([&]() {
+		peg.ProcessImage();
+	});
+
 	while (!glfwWindowShouldClose(window))
 	{
 		GLfloat currentFrame = glfwGetTime();
@@ -138,6 +151,12 @@ int main(int argc, char* argv[])
 		shader.setMat4("model", model);
 		shader.setVec3("spriteColor", color);
 		
+		{
+			std::unique_lock<std::mutex> lock (peg.m_DataMtx);
+			if (peg.m_data){
+				loadTextureFromData(peg.m_data, 960, 720, textureId);
+			}
+		}
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureId);
 		glBindVertexArray(VAO);
@@ -187,4 +206,18 @@ unsigned int loadTextureFromFile(char const* path)
 		stbi_image_free(data);
 	}
 	return texture;
+}
+
+void loadTextureFromData(unsigned char* data, int width, int height, GLuint texture)
+{
+	GLenum format(GL_RGB);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

@@ -16,6 +16,9 @@
     <Filter Include="shader">
       <UniqueIdentifier>{8df39799-abf0-4e76-92ed-fe64ca5ad91e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ffmpeg">
+      <UniqueIdentifier>{6726f285-631c-4d62-9393-af807f0c3d80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -33,6 +36,9 @@
     <ClCompile Include="Particle.cpp">
       <Filter>shader</Filter>
     </ClCompile>
+    <ClCompile Include="Peg.cpp">
+      <Filter>ffmpeg</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Peg.h">
+      <Filter>ffmpeg</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
